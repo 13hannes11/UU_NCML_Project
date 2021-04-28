@@ -8,7 +8,7 @@ data = pd.DataFrame()
 name_column = 'Member'
 vote_column = 'Vote'
 
-column_to_filename = {}
+vote_column_to_title = {}
 
 voting_features = {'Aye':0, 'No':1, 'No Vote Recorded':2}
 for dirname, _, filenames in os.walk('./uk/csv'):
@@ -30,7 +30,7 @@ for dirname, _, filenames in os.walk('./uk/csv'):
         df=df.rename(columns={vote_column:vote_column_name})
          
         # Map column name of vote to title -> allows retrieving what the vote was about
-        column_to_filename[vote_column_name] = title_df.iat[2,0]
+        vote_column_to_title[vote_column_name] = title_df.iat[2,0]
                 
         if data.empty:
             # if first file that is loaded set data equal to data from first file
@@ -39,5 +39,5 @@ for dirname, _, filenames in os.walk('./uk/csv'):
             # merge data with already loaded data 
             data = data.merge(df[[name_column, vote_column_name]], on=name_column)
 
-print(column_to_filename)
+print(vote_column_to_title)
 print(data)
