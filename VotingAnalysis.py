@@ -147,7 +147,7 @@ inp = X.shape[1]   # No of features (bill count)
 h = 150            # Grid height
 w = 150            # Grid width
 rad = 2            # Neighbour radius
-ep = 50           # No of epochs
+ep = 300           # No of epochs
 
 # Create SOFM
 sofmnet = algorithms.SOFM(
@@ -183,7 +183,7 @@ inp = X.shape[1]   # No of features (bill count)
 h = 30            # Grid height
 w = 30            # Grid width
 rad = 3            # Neighbour radius
-ep = 10           # No of epochs
+ep = 100           # No of epochs
 
 # Create SOFM
 sofmnet = algorithms.SOFM(
