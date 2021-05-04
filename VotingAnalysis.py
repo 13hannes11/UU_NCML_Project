@@ -219,9 +219,9 @@ ys, xs = np.unravel_index(np.argmax(X, axis=1), (h, w))
 ys_disp = ys + np.random.rand(ys.shape[0])
 xs_disp = xs + np.random.rand(xs.shape[0])
 
+party_index_mapping, party_affiliation_numeric = np.unique(data[:,1], return_inverse=True)
 
-# TODO: fix color
-plot_mps(fig, ax, ys_disp, xs_disp, data[:,0], np.random.rand(X.shape[0]))
+plot_mps(fig, ax, ys_disp, xs_disp, data[:,0] + " (" + data[:,1] + ")", party_affiliation_numeric)
 plt.show()
 
 #Simple SOFM for UK
