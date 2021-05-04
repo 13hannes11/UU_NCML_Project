@@ -172,8 +172,22 @@ def plot_mps(fig, ax, x, y, labels, colors, cmap = plt.cm.RdYlGn):
     fig.canvas.mpl_connect("motion_notify_event", hover)
     #plt.show()
 
+def plot_mps(names, xs, ys, party_affiliation):
+    # converting parties to numeric format 
+    party_index_mapping, party_ids = np.unique(party_affiliation, return_inverse=True)
 
-def plot_parties(xs, ys, party_ids, party_index_mapping):
+    # add random offset to show points that are in the same location
+    ys_disp = ys + np.random.rand(ys.shape[0])
+    xs_disp = xs + np.random.rand(xs.shape[0])
+    parties = party_index_mapping[party_ids]
+    plot_hoverscatter(xs_disp, ys_disp, data[:,0] + " (" + parties + ")", party_ids)
+
+
+def plot_parties(xs, ys, party_affiliation):
+    # converting parties to numeric format 
+    party_index_mapping, party_ids = np.unique(party_affiliation, return_inverse=True)
+
+    # calculate average position of party
     party_count = np.zeros(party_index_mapping.shape[0])
     party_xs = np.zeros(party_index_mapping.shape[0])
     party_ys = np.zeros(party_index_mapping.shape[0])
@@ -181,9 +195,9 @@ def plot_parties(xs, ys, party_ids, party_index_mapping):
         party_xs[party_id] += x
         party_ys[party_id] += y
         party_count[party_id] += 1
-
     party_xs /= party_count
     party_ys /= party_count
+    
     plt.figure()
     plt.scatter(party_xs, party_ys)
     # plotting labels
@@ -227,23 +241,19 @@ plt.axis('off')
 plt.colorbar()
 plt.show()
 
-fig,ax = plt.subplots()
+# predicting mp positions
 prediction = sofmnet.predict(X)
 print(f'prediction: {prediction}')
+
 # converting to x and y coordinates
 ys, xs = np.unravel_index(np.argmax(X, axis=1), (h, w))
 
-# add random offset to show points that are in the same location
-ys_disp = ys + np.random.rand(ys.shape[0])
-xs_disp = xs + np.random.rand(xs.shape[0])
-
-party_index_mapping, party_ids = np.unique(data[:,1], return_inverse=True)
-
-plot_mps(fig, ax, xs_disp, ys_disp, data[:,0] + " (" + data[:,1] + ")", party_ids)
+# plotting mps
+plot_mps(data[:,0], xs, ys, data[:,1])
 plt.show()
 
 # plotting parties
-plot_parties(xs, ys, party_ids, party_index_mapping)
+plot_parties(xs, ys, data[:,1])
 plt.show()
 
 #Simple SOFM for UK
