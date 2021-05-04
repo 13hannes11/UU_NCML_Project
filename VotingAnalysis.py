@@ -136,7 +136,8 @@ def compute_heatmap(weight, grid_height, grid_width):
 
     return heatmap
 
-def plot_mps(fig, ax, x, y, labels, colors, cmap = plt.cm.RdYlGn):
+def plot_hoverscatter(x, y, labels, colors, cmap = plt.cm.RdYlGn):
+    fig,ax = plt.subplots()
     ANNOTATION_DISTANCE = 5
     TRANSPARENCY = 0.8
     scatterplot = plt.scatter(x,y,c=colors, s=5, cmap=cmap)
