@@ -186,6 +186,7 @@ def plot_mps(names, xs, ys, party_affiliation):
 
 
 def plot_parties(xs, ys, party_affiliation):
+    cmap = plt.cm.RdYlGn
     # converting parties to numeric format 
     party_index_mapping, party_ids = np.unique(party_affiliation, return_inverse=True)
 
@@ -201,7 +202,8 @@ def plot_parties(xs, ys, party_affiliation):
     party_ys /= party_count
     
     plt.figure()
-    plt.scatter(party_xs, party_ys)
+    party_colors=np.array(range(len(party_index_mapping)))
+    plt.scatter(party_xs, party_ys, c=party_colors, cmap=cmap)
     # plotting labels
     offset = 0.01
     for x,y, party in zip(party_xs, party_ys, party_index_mapping):
