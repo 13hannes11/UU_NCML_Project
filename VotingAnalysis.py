@@ -219,9 +219,30 @@ ys, xs = np.unravel_index(np.argmax(X, axis=1), (h, w))
 ys_disp = ys + np.random.rand(ys.shape[0])
 xs_disp = xs + np.random.rand(xs.shape[0])
 
-party_index_mapping, party_affiliation_numeric = np.unique(data[:,1], return_inverse=True)
+party_index_mapping, party_ids = np.unique(data[:,1], return_inverse=True)
 
-plot_mps(fig, ax, ys_disp, xs_disp, data[:,0] + " (" + data[:,1] + ")", party_affiliation_numeric)
+plot_mps(fig, ax, xs_disp, ys_disp, data[:,0] + " (" + data[:,1] + ")", party_ids)
+plt.show()
+
+party_count = np.zeros(party_index_mapping.shape[0])
+party_xs = np.zeros(party_index_mapping.shape[0])
+party_ys = np.zeros(party_index_mapping.shape[0])
+for x, y, party_id in zip(xs, ys, party_ids):
+    party_xs[party_id] += x
+    party_ys[party_id] += y
+    party_count[party_id] += 1
+
+party_xs /= party_count
+party_ys /= party_count
+
+plt.figure()
+plt.scatter(party_xs, party_ys)
+
+# plotting labels
+offset = 0.01
+for x,y, party in zip(party_xs, party_ys, party_index_mapping):
+    plt.text(x + offset, y + offset, party)
+
 plt.show()
 
 #Simple SOFM for UK
