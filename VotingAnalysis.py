@@ -172,6 +172,24 @@ def plot_mps(fig, ax, x, y, labels, colors, cmap = plt.cm.RdYlGn):
     fig.canvas.mpl_connect("motion_notify_event", hover)
     #plt.show()
 
+
+def plot_parties(xs, ys, party_ids, party_index_mapping):
+    party_count = np.zeros(party_index_mapping.shape[0])
+    party_xs = np.zeros(party_index_mapping.shape[0])
+    party_ys = np.zeros(party_index_mapping.shape[0])
+    for x, y, party_id in zip(xs, ys, party_ids):
+        party_xs[party_id] += x
+        party_ys[party_id] += y
+        party_count[party_id] += 1
+
+    party_xs /= party_count
+    party_ys /= party_count
+    plt.figure()
+    plt.scatter(party_xs, party_ys)
+    # plotting labels
+    offset = 0.01
+    for x,y, party in zip(party_xs, party_ys, party_index_mapping):
+        plt.text(x + offset, y + offset, party)
 #Simple SOFM for German
 plt.style.use('ggplot')
 
@@ -224,25 +242,8 @@ party_index_mapping, party_ids = np.unique(data[:,1], return_inverse=True)
 plot_mps(fig, ax, xs_disp, ys_disp, data[:,0] + " (" + data[:,1] + ")", party_ids)
 plt.show()
 
-party_count = np.zeros(party_index_mapping.shape[0])
-party_xs = np.zeros(party_index_mapping.shape[0])
-party_ys = np.zeros(party_index_mapping.shape[0])
-for x, y, party_id in zip(xs, ys, party_ids):
-    party_xs[party_id] += x
-    party_ys[party_id] += y
-    party_count[party_id] += 1
-
-party_xs /= party_count
-party_ys /= party_count
-
-plt.figure()
-plt.scatter(party_xs, party_ys)
-
-# plotting labels
-offset = 0.01
-for x,y, party in zip(party_xs, party_ys, party_index_mapping):
-    plt.text(x + offset, y + offset, party)
-
+# plotting parties
+plot_parties(xs, ys, party_ids, party_index_mapping)
 plt.show()
 
 #Simple SOFM for UK
