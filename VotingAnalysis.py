@@ -55,6 +55,7 @@ def load_uk_data():
     data = pd.DataFrame()
     
     name_column = 'Member'
+    party_column = 'Party'
     vote_column = 'Vote'
     
     column_to_filename = {}
@@ -83,7 +84,7 @@ def load_uk_data():
                     
             if data.empty:
                 # if first file that is loaded set data equal to data from first file
-                data = df[[name_column, vote_column_name]]
+                data = df[[name_column, party_column, vote_column_name]]
             else:
                 # merge data with already loaded data 
                 data = data.merge(df[[name_column, vote_column_name]], on=name_column)
@@ -262,7 +263,7 @@ plt.style.use('ggplot')
 
 # Load data
 data = load_uk_data().to_numpy()
-X = data[:,1:]
+X = data[:,2:]
 print(X)
 
 inp = X.shape[1]   # No of features (bill count)
