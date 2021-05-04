@@ -297,3 +297,18 @@ ax.set_zlabel('vote_2')
 ax.legend()
 
 plt.show()
+
+# predicting mp positions
+prediction = sofmnet.predict(X)
+print(f'prediction: {prediction}')
+
+# converting to x and y coordinates
+ys, xs = np.unravel_index(np.argmax(X, axis=1), (h, w))
+
+# plotting mps
+plot_mps(data[:,0], xs, ys, data[:,1])
+plt.show()
+
+# plotting parties
+plot_parties(xs, ys, data[:,1])
+plt.show()
