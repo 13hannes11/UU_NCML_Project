@@ -49,9 +49,12 @@ def get_all_link_urls():
 
     WebDriverWait(driver, 10).until(ec.visibility_of_element_located((By.XPATH, '//div[contains(@class, "card-list")]')))
 
-    #driver.find_element_by_xpath('//*[@id="FromDate"]').send_keys(DATE_FROM)
-    #driver.find_element_by_xpath('//*[@id="ToDate"]').send_keys(DATE_TO)
-    #driver.find_element_by_xpath('//*[@id="voteSearch"]/div[2]/div/div/div/button').click()
+    driver.find_element_by_xpath('//*[@id="FromDate"]').clear()
+    driver.find_element_by_xpath('//*[@id="ToDate"]').clear()
+    driver.find_element_by_xpath('//*[@id="FromDate"]').send_keys(DATE_FROM)
+    driver.find_element_by_xpath('//*[@id="ToDate"]').send_keys(DATE_TO)
+    #time.sleep(WAIT_TIME_SEC)
+    driver.find_element_by_xpath('//button[@class="btn btn-primary"]').click()
 
     running = True
     while running:
