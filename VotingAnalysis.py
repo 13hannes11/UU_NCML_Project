@@ -64,10 +64,10 @@ def load_uk_data():
     for dirname, _, filenames in os.walk('./uk/csv'):
         for filename in filenames:
             vote_counter += 1
-            print(os.path.join(dirname, filename))
             
             # Read title rows
-            title_df = pd.read_csv(os.path.join(dirname, filename),nrows=(3),skip_blank_lines=True,header=None)
+            # sep is set to new line so it never splits up the title cells
+            title_df = pd.read_csv(os.path.join(dirname, filename), sep='\n',nrows=(3),skip_blank_lines=True,header=None)
         
             # Read data rows
             df = pd.read_csv(os.path.join(dirname, filename),skiprows=(10))
@@ -288,6 +288,7 @@ sofmnet = algorithms.SOFM(
 sofmnet.train(X, epochs=ep)
 
 #Visualizing Output
+'''
 fig = plt.figure()
 ax = plt.axes(projection='3d')
 ax.scatter3D(*sofmnet.weight, label='SOFM Weights')
@@ -299,7 +300,7 @@ ax.set_zlabel('vote_2')
 ax.legend()
 
 plt.show()
-
+'''
 # predicting mp positions
 prediction = sofmnet.predict(X)
 print(f'prediction: {prediction}')
