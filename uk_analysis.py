@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import load_data as ld
-import voting_analysis as va
+import voting_lib.load_data as ld
+import voting_lib.voting_analysis as va
 
 # Load data
 data = ld.load_uk_data().to_numpy()
