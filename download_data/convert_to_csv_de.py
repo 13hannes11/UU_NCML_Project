@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 
-base_dir = "./de/"
+base_dir = "../de/"
 out_dir = "csv/"
 in_dir = "input/"
 title_file = "filename_to_titles.csv"

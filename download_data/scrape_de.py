@@ -21,7 +21,7 @@ DATE_FROM = "01.01.2019"
 DATE_TO = "20.04.2021"
 
 # Output
-DOWNLOAD_FOLDER = "de/input/"
+DOWNLOAD_FOLDER = "../de/input/"
 
 
 def get_element_by_xpath_or_false(driver, xpath):
