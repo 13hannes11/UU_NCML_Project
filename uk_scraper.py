@@ -17,11 +17,11 @@ DRIVER_PATH = "./chromedriver"
 WAIT_TIME_SEC = 3
 
 # Filter
-DATE_FROM = "01/01/2019"
+DATE_FROM = "01/05/2020"
 DATE_TO = "01/05/2021"
 
 # Output
-DOWNLOAD_FOLDER = "./uk/"
+DOWNLOAD_FOLDER = "./uk/csv/"
 
 
 def get_element_by_xpath_or_false(driver, xpath):
@@ -41,7 +41,7 @@ def get_all_link_urls():
     url = r'https://votes.parliament.uk/Votes/Commons'
 
     options = Options()
-    #options.add_argument("--headless")
+    options.add_argument("--headless")
     options.add_argument("window-size=800,600")
 
     driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
@@ -53,7 +53,7 @@ def get_all_link_urls():
     driver.find_element_by_xpath('//*[@id="ToDate"]').clear()
     driver.find_element_by_xpath('//*[@id="FromDate"]').send_keys(DATE_FROM)
     driver.find_element_by_xpath('//*[@id="ToDate"]').send_keys(DATE_TO)
-    #time.sleep(WAIT_TIME_SEC)
+
     driver.find_element_by_xpath('//button[@class="btn btn-primary"]').click()
 
     running = True
@@ -68,7 +68,7 @@ def get_all_link_urls():
         for elem in elems:
             if elem.is_displayed():
                 title_url_list.append((elem.get_attribute("href")))
-               # print(elem.get_attribute("href")) 
+                print(f'Link to vote page: { elem.get_attribute("href") }') 
 
         # Is there a next page
         
@@ -94,6 +94,7 @@ def get_all_file_links():
         driver.get(elm)
         element = get_element_by_xpath_or_false(driver,'//a[2][@class="dropdown-item"]')
         element_x = element.get_attribute("href")
+        print(f'Download url: {element_x}')
         title_link_list.append((elm, element_x))
         title_csv_list.append(element_x)
     driver.quit()
@@ -117,5 +118,6 @@ for elem in title_link_list:
     print(elem)
 
 for file_url in title_csv_list:
+    print(f'saving: {file_url}')
     save_to_file(file_url, DOWNLOAD_FOLDER)
-    #print(file_url)
+    
