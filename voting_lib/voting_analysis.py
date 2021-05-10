@@ -5,6 +5,8 @@ import numpy as np
 from neupy import algorithms
 from itertools import product
 import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sn
 
 def train_model(X, grid_h, grid_w, radius, step, ep):
 
@@ -36,11 +38,21 @@ def predict(model, data, grid_h, grid_w):
     ys, xs = np.unravel_index(np.argmax(prediction, axis=1), (grid_h, grid_w))
 
     # plotting mps
-    plot_mps(data[:,0], xs, ys, data[:,1])
+    party_affiliation = data[:,1]
+    plot_mps(data[:,0], xs, ys, party_affiliation)
     plt.show()
 
+    # calculating party positions based on mps
+
+    party_pos = calc_party_pos(np.column_stack((xs, ys)), party_affiliation)
+
     # plotting parties
-    plot_parties(xs, ys, data[:,1])
+    plot_parties(party_pos)
+    plt.show()
+
+    # plotting party distances in outputspace
+    part_distance_out = calc_party_distances(party_pos) 
+    plot_party_distances(part_distance_out)
     plt.show()
     
     # Heatmap of weights
@@ -143,26 +155,45 @@ def plot_mps(names, xs, ys, party_affiliation):
     plot_hoverscatter(xs_disp, ys_disp, names + " (" + parties + ")", party_ids)
 
 
-def plot_parties(xs, ys, party_affiliation):
-    cmap = plt.cm.RdYlGn
-    # converting parties to numeric format 
+def calc_party_pos(members_of_parliament, party_affiliation):
     party_index_mapping, party_ids = np.unique(party_affiliation, return_inverse=True)
 
-    # calculate average position of party
-    party_count = np.zeros(party_index_mapping.shape[0])
-    party_xs = np.zeros(party_index_mapping.shape[0])
-    party_ys = np.zeros(party_index_mapping.shape[0])
-    for x, y, party_id in zip(xs, ys, party_ids):
-        party_xs[party_id] += x
-        party_ys[party_id] += y
-        party_count[party_id] += 1
-    party_xs /= party_count
-    party_ys /= party_count
+    party_pos = np.zeros((party_index_mapping.shape[0], members_of_parliament.shape[1]))
+    party_count = np.zeros((party_index_mapping.shape[0], members_of_parliament.shape[1]))
+    party_pos
+
+    for i, mp in enumerate(members_of_parliament):
+        party_index = party_ids[i]
+        party_pos[party_index] += mp
+        party_count[party_index] += 1
+
+    party_pos /= party_count
+
+    return pd.DataFrame(data=party_pos, index=party_index_mapping)
+def plot_parties(parties):
+    cmap = plt.cm.RdYlGn
+    
+    party_index_mapping = parties.index
     
     plt.figure()
     party_colors=np.array(range(len(party_index_mapping)))
-    plt.scatter(party_xs, party_ys, c=party_colors, cmap=cmap)
+    plt.scatter(parties[0].to_numpy() , parties[1].to_numpy(), c=party_colors, cmap=cmap)
+
     # plotting labels
     offset = 0.01
-    for x,y, party in zip(party_xs, party_ys, party_index_mapping):
+    for x,y, party in zip(parties[0], parties[1], party_index_mapping):
         plt.text(x + offset, y + offset, party)
+def calc_party_distances(parties):
+    distances = np.zeros((parties.shape[0], parties.shape[0]))
+    for i, (_, left_party) in enumerate(parties.iterrows()):
+        for j, (_, top_party) in enumerate(parties.iterrows()):
+            distances[i,j] = np.linalg.norm(left_party.to_numpy() - top_party.to_numpy())
+
+    party_index_mapping = parties.index
+    return pd.DataFrame(data=distances, index=party_index_mapping, columns=party_index_mapping)
+
+def plot_party_distances(distances):
+    fig = plt.figure()
+    ax = plt.gca()
+    ax.tick_params(axis="x", bottom=False, top=True, labelbottom=False, labeltop=True)
+    sn.heatmap(distances, cmap='Oranges', annot=True)
