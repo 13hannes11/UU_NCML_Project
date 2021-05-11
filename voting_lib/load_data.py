@@ -12,8 +12,10 @@ def load_german_data():
     """  
     title_file = "filename_to_titles.csv"
     vote_counter = -1
-    data = pd.DataFrame()
+    #data = pd.DataFrame()
+    data = {}
     
+    period_column_g = 'Wahlperiode'
     name_column_g = 'Bezeichnung'
     party_column_g = 'Fraktion/Gruppe'
     name_column = 'Member'
@@ -25,6 +27,9 @@ def load_german_data():
     for dirname, _, filenames in os.walk('./de/csv'):
         for filename in filenames:
             if filename != title_file:
+                
+                print(filename)
+                
                 vote_counter += 1
                 df = pd.read_csv(os.path.join(dirname, filename))
                 
@@ -41,13 +46,15 @@ def load_german_data():
                 
                 df=df.rename(columns={name_column_g:name_column,party_column_g:party_column})
                 
-                if data.empty:
-                    # if first file that is loaded set data equal to data from first file
-                    data = df[[name_column, party_column, vote_column_name]]
-                else:
+                period = df.iloc[0][period_column_g]
+                                    
+                if period in data:
                     # merge data with already loaded data 
-                    data = data.merge(df[[name_column, vote_column_name]], on=name_column)    
-                
+                    data[period] = data[period].merge(df[[name_column, vote_column_name]], on=name_column)                    
+                else:
+                    # if first file that is loaded set data equal to data from first file
+                    data[period] = df[[name_column, party_column, vote_column_name]]
+                    
     print(data)
     return data
 

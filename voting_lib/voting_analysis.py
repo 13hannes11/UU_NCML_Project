@@ -60,14 +60,14 @@ def predict(model, data, grid_h, grid_w):
     plot_party_distances(part_distance_in)
     plt.show()
 
-    # Heatmap of weights
-    plt.figure()
-    weight = model.weight.reshape((model.n_inputs, grid_h, grid_w))
-    heatmap = compute_heatmap(weight, grid_h, grid_w)
-    plt.imshow(heatmap, cmap='Greys_r', interpolation='nearest')
-    plt.axis('off')
-    plt.colorbar()
-    plt.show()
+    ## Heatmap of weights
+    # plt.figure()
+    # weight = model.weight.reshape((model.n_inputs, grid_h, grid_w))
+    # heatmap = compute_heatmap(weight, grid_h, grid_w)
+    # plt.imshow(heatmap, cmap='Greys_r', interpolation='nearest')
+    # plt.axis('off')
+    # plt.colorbar()
+    # plt.show()
 
 def iter_neighbours(weights, hexagon=False):
     _, grid_height, grid_width = weights.shape
