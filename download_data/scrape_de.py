@@ -17,8 +17,8 @@ DRIVER_PATH = "./chromedriver"
 WAIT_TIME_SEC = 7
 
 # Filter
-DATE_FROM = "01.01.2019"
-DATE_TO = "20.04.2021"
+DATE_FROM = "17.10.2012" #dd.mm.yyyy
+DATE_TO = "11.05.2021" #dd.mm.yyyy
 
 # Output
 DOWNLOAD_FOLDER = "../de/input/"
@@ -55,6 +55,7 @@ def get_title_and_url():
     running = True
     while running:
         # as the side does not provide any loading indicators we need to wait after performing an action that requires loading
+        print('waiting to be sure the page has updated')
         time.sleep(WAIT_TIME_SEC)
 
         # element selector to get elements that contain title and link to excel file
@@ -64,8 +65,7 @@ def get_title_and_url():
         for element in elements:
             if element.is_displayed():
                 title_element = get_element_by_xpath_or_false(element, './p/strong')
-                link_element = get_element_by_xpath_or_false(element, './ul/li/a[starts-with(@title, "XLSX")]')
-                
+                link_element = get_element_by_xpath_or_false(element, './ul/li/a[starts-with(@title, "XLS")]')
                 if title_element and link_element:
                     title = title_element.text
                     link = link_element.get_attribute("href")
