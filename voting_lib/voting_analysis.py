@@ -39,14 +39,14 @@ def predict(model, data, grid_h, grid_w):
 
     # plotting mps
     party_affiliation = data[:,1]
-    xs_disp, ys_disp = plot_mps(data[:,0], xs, ys, party_affiliation)
+    plot_mps(data[:,0], xs, ys, party_affiliation, randomize_positions=True)
     plt.show()
 
     # calculating party positions based on mps
-    party_pos = calc_party_pos(np.column_stack((xs_disp, ys_disp)), party_affiliation)
+    party_pos = calc_party_pos(np.column_stack((xs, ys)), party_affiliation)
 
     # plotting parties
-    plot_parties(party_pos)
+    plot_parties(party_pos, randomize_positions=False, new_plot=True)
     plt.show()
 
     # plotting party distances in output space
@@ -149,16 +149,20 @@ def plot_hoverscatter(x, y, labels, colors, cmap = plt.cm.RdYlGn):
     fig.canvas.mpl_connect("motion_notify_event", hover)
     #plt.show()
 
-def plot_mps(names, xs, ys, party_affiliation):
+def plot_mps(names, xs, ys, party_affiliation, randomize_positions=True):
     # converting parties to numeric format 
     party_index_mapping, party_ids = np.unique(party_affiliation, return_inverse=True)
 
     # add random offset to show points that are in the same location
-    xs_disp = xs + np.random.rand(xs.shape[0])
-    ys_disp = ys + np.random.rand(ys.shape[0])
+    if randomize_positions:
+        xs_disp = xs + np.random.rand(xs.shape[0]) - 0.5
+        ys_disp = ys + np.random.rand(ys.shape[0]) - 0.5
+    else:
+        xs_disp = xs
+        ys_disp = ys
+    
     parties = party_index_mapping[party_ids]
     plot_hoverscatter(xs_disp, ys_disp, names + " (" + parties + ")", party_ids)
-    return xs_disp, ys_disp
 
 def calc_party_pos(members_of_parliament, party_affiliation):
     party_index_mapping, party_ids = np.unique(party_affiliation, return_inverse=True)
@@ -174,18 +178,27 @@ def calc_party_pos(members_of_parliament, party_affiliation):
     party_pos /= party_count
 
     return pd.DataFrame(data=party_pos, index=party_index_mapping)
-def plot_parties(parties):
+def plot_parties(parties, randomize_positions=False, new_plot=True):
     cmap = plt.cm.RdYlGn
     
     party_index_mapping = parties.index
     
-    plt.figure()
+    if new_plot:
+        plt.figure()
     party_colors=np.array(range(len(party_index_mapping)))
-    plt.scatter(parties[0].to_numpy() , parties[1].to_numpy(), c=party_colors, cmap=cmap)
+    
+    if randomize_positions:
+        xs_disp = parties[0].to_numpy() + np.random.rand(parties.shape[0]) - 0.5
+        ys_disp = parties[0].to_numpy() + np.random.rand(parties.shape[0]) - 0.5
+    else:
+        xs_disp = parties[0].to_numpy() 
+        ys_disp = parties[1].to_numpy()
+
+    plt.scatter(xs_disp , ys_disp, c=party_colors, cmap=cmap)
 
     # plotting labels
     offset = 0.01
-    for x,y, party in zip(parties[0], parties[1], party_index_mapping):
+    for x,y, party in zip(xs_disp, ys_disp, party_index_mapping):
         plt.text(x + offset, y + offset, party)
 def calc_party_distances(parties):
     distances = np.zeros((parties.shape[0], parties.shape[0]))
