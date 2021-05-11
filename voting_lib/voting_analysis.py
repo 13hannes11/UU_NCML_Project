@@ -39,12 +39,11 @@ def predict(model, data, grid_h, grid_w):
 
     # plotting mps
     party_affiliation = data[:,1]
-    plot_mps(data[:,0], xs, ys, party_affiliation)
+    xs_disp, ys_disp = plot_mps(data[:,0], xs, ys, party_affiliation)
     plt.show()
 
     # calculating party positions based on mps
-
-    party_pos = calc_party_pos(np.column_stack((xs, ys)), party_affiliation)
+    party_pos = calc_party_pos(np.column_stack((xs_disp, ys_disp)), party_affiliation)
 
     # plotting parties
     plot_parties(party_pos)
@@ -155,11 +154,11 @@ def plot_mps(names, xs, ys, party_affiliation):
     party_index_mapping, party_ids = np.unique(party_affiliation, return_inverse=True)
 
     # add random offset to show points that are in the same location
-    ys_disp = ys + np.random.rand(ys.shape[0])
     xs_disp = xs + np.random.rand(xs.shape[0])
+    ys_disp = ys + np.random.rand(ys.shape[0])
     parties = party_index_mapping[party_ids]
     plot_hoverscatter(xs_disp, ys_disp, names + " (" + parties + ")", party_ids)
-
+    return xs_disp, ys_disp
 
 def calc_party_pos(members_of_parliament, party_affiliation):
     party_index_mapping, party_ids = np.unique(party_affiliation, return_inverse=True)
