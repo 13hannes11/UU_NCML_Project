@@ -179,13 +179,11 @@ def calc_party_pos(members_of_parliament, party_affiliation):
 
     return pd.DataFrame(data=party_pos, index=party_index_mapping)
 def plot_parties(parties, randomize_positions=False, new_plot=True):
-    cmap = plt.cm.RdYlGn
     
     party_index_mapping = parties.index
     
     if new_plot:
         plt.figure()
-    party_colors=np.array(range(len(party_index_mapping)))
     
     if randomize_positions:
         xs_disp = parties[0].to_numpy() + np.random.rand(parties.shape[0]) - 0.5
@@ -194,12 +192,12 @@ def plot_parties(parties, randomize_positions=False, new_plot=True):
         xs_disp = parties[0].to_numpy() 
         ys_disp = parties[1].to_numpy()
 
-    plt.scatter(xs_disp , ys_disp, c=party_colors, cmap=cmap)
-
-    # plotting labels
-    offset = 0.01
-    for x,y, party in zip(xs_disp, ys_disp, party_index_mapping):
-        plt.text(x + offset, y + offset, party)
+    fig, ax = plt.subplots()
+    for i, party in enumerate(party_index_mapping):
+        print("Party", party, " x = ", xs_disp[i], "y = ", ys_disp[i])
+        plt.scatter(xs_disp[i], ys_disp[i], label=party)
+    plt.legend(title='Parties',bbox_to_anchor=(1.05, 1), loc='upper left')
+    
 def calc_party_distances(parties):
     distances = np.zeros((parties.shape[0], parties.shape[0]))
     for i, (_, left_party) in enumerate(parties.iterrows()):
