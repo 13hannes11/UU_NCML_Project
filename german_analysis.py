@@ -3,6 +3,7 @@
 
 import voting_lib.load_data as ld
 import voting_lib.voting_analysis as va
+import voting_lib.political_compass as pc
 import numpy as np
 
 # Training Paramters
@@ -16,6 +17,9 @@ ep = 300          # No of epochs
 # Load data
 dataset = ld.load_german_data()
 
+years = [2017, 2013, 2009]
+
+i = 0
 for period, df in dataset.items():
 
     print("Election Period ", period)
@@ -27,4 +31,6 @@ for period, df in dataset.items():
     model = va.train_model(X, grid_h, grid_w, radius, step, ep)
 
     # Predict and visualize output
-    va.predict(model, data, grid_h, grid_w)
+    va.predict(model, data, grid_h, grid_w, pc.get_compass_parties(year=years[i], country='de'))
+    i += 1
+
