@@ -80,7 +80,7 @@ def predict(model, data, grid_h, grid_w, comparison_data=pd.DataFrame()):
        err = normalize_df(part_distance_out) - normalize_df(comparison_data_dist)
        err = err * err
        plot_party_distances(err)
-       plt.title(f'distance squared error, with mse={str(np.nanmean(err.to_numpy())):.2}')
+       plt.title(f'distance squared error, with mse={np.nanmean(err.to_numpy()):.2f}')
        plt.show()
 
 
