@@ -8,7 +8,7 @@ def get_compass_parties(year=2017, country='de'):
         elif year == 2013:
             data  = [[-3.5, -4],  [7, 6.5],   [-7, -6.5], [1, 2]]
             index =  ['BÜ90/GR', 'CDU/CSU', 'DIE LINKE.', 'SPD']
-        elif year == 2009:
+        elif year == 2005:
             # TODO: add data for 2011
             data  = [[-1.5, -1.5],  [9.5, 8],     [-6, -2], [3, 3.5]]
             index =  [  'BÜ90/GR', 'CDU/CSU', 'DIE LINKE.',   'SPD']

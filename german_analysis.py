@@ -17,9 +17,8 @@ ep = 300          # No of epochs
 # Load data
 dataset = ld.load_german_data()
 
-years = [2017, 2013, 2009]
+years = {17:2005, 18:2013, 19:2017}
 
-i = 0
 for period, df in dataset.items():
 
     print("Election Period ", period)
@@ -31,6 +30,5 @@ for period, df in dataset.items():
     model = va.train_model(X, grid_h, grid_w, radius, step, ep)
 
     # Predict and visualize output
-    va.predict(model, data, grid_h, grid_w, pc.get_compass_parties(year=years[i], country='de'))
-    i += 1
+    va.predict(model, data, grid_h, grid_w, pc.get_compass_parties(year=years[period], country='de'))
 
