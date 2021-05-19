@@ -59,11 +59,13 @@ def load_german_data():
     return data
 
 
-def load_uk_data():
+def load_uk_data(path):
     """
     Load German Parliament data
     return : Data with columns [Member, Party, vote_0, vote_1 etc]
     """  
+    #print directory path
+    print(path) 
     # Preprocess data
     vote_counter = -1
     data = pd.DataFrame()
@@ -75,7 +77,7 @@ def load_uk_data():
     column_to_filename = {}
     
     voting_features = {'Aye':0, 'Teller - Ayes':0, 'No':1, 'Teller - Noes':1, 'No Vote Recorded':2}
-    for dirname, _, filenames in os.walk('./uk/csv'):
+    for dirname, _, filenames in os.walk(path):
         for filename in filenames:
             vote_counter += 1
             
