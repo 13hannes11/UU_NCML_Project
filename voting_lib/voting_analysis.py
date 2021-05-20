@@ -27,6 +27,8 @@ def train_model(X, grid_h, grid_w, radius, step, ep):
     return sofmnet
 
 def predict(model, data, grid_h, grid_w, comparison_data=pd.DataFrame()):
+    # default tight layout
+    plt.rcParams["figure.autolayout"] = True
 
     X = data[:,2:]
     
@@ -36,6 +38,7 @@ def predict(model, data, grid_h, grid_w, comparison_data=pd.DataFrame()):
 
     # Plot hit map
     plot_hits(prediction, grid_w, grid_h)
+    plt.title("Hitmap")
     
     # converting to x and y coordinates
     ys, xs = np.unravel_index(np.argmax(prediction, axis=1), (grid_h, grid_w))
@@ -43,6 +46,7 @@ def predict(model, data, grid_h, grid_w, comparison_data=pd.DataFrame()):
     # plotting mps
     party_affiliation = data[:,1]
     plot_mps(data[:,0], xs, ys, party_affiliation, randomize_positions=True)
+    plt.title("Members of Parliament")
     plt.show()    
 
     # calculating party positions based on mps
@@ -64,26 +68,27 @@ def predict(model, data, grid_h, grid_w, comparison_data=pd.DataFrame()):
     plt.yticks(np.arange(0, grid_h+1, 1.0))
     plt.grid(True)
     plt.title(f'Learning Radius: {model.learning_radius}, Grid Size: {grid_w}')
-    plt.show()
 
     # plotting party distances in output space
     part_distance_out = calc_party_distances(party_pos) 
     plot_party_distances(part_distance_out)
+    plt.title('Party Distances')
     plt.show()
 
     if not comparison_data.empty:
        plot_parties(comparison_data, randomize_positions=False, new_plot=True)
-       plt.title("political compass")
+       plt.title("Political Compass")
        plt.ylabel("libertarian - authoritarian")
        plt.xlabel("left < economic > right")
-       plt.show()
+              
        comparison_data_dist = calc_party_distances(comparison_data)
        plot_party_distances(comparison_data_dist)
-       plt.show()
+       plt.title("Political Compass Party Distances")
+
        err = remove_NaN_rows_columns(normalize_df(part_distance_out) - normalize_df(comparison_data_dist))
        err = err * err
        plot_party_distances(err)
-       plt.title(f'distance squared error, with mse={np.nanmean(err.to_numpy()):.2f}')
+       plt.title(f'Normalized Distance Squared Error, with MSE={np.nanmean(err.to_numpy()):.2f}')
        plt.show()
 
 
