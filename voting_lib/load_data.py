@@ -20,7 +20,9 @@ def load_german_data():
     party_column_g = 'Fraktion/Gruppe'
     name_column = 'Member'
     party_column = 'Party'
-    
+
+    parties_to_remove = ['Fraktionslos']
+
     vote_column_to_title = {}
     
     voting_features = ['ja', 'nein', 'Enthaltung', 'ungültig']
@@ -45,6 +47,7 @@ def load_german_data():
                 df[vote_column_name] = df[voting_features].sum(axis=1)
                 
                 df=df.rename(columns={name_column_g:name_column,party_column_g:party_column})
+                df=df[~df.Party.isin(parties_to_remove)]
                 
                 period = df.iloc[0][period_column_g]
                                     
@@ -73,6 +76,8 @@ def load_uk_data(path):
     name_column = 'Member'
     party_column = 'Party'
     vote_column = 'Vote'
+
+    parties_to_remove = ['Speaker', 'Deputy Speaker', 'Independent']
     
     column_to_filename = {}
     
@@ -105,5 +110,6 @@ def load_uk_data(path):
                 # merge data with already loaded data 
                 data = data.merge(df[[name_column, vote_column_name]], on=name_column)
     
+    data = data[~data.Party.isin(parties_to_remove)] 
     print(data)
     return data
