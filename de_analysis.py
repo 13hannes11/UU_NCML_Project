@@ -11,8 +11,8 @@ import numpy as np
 grid_h = 11       # Grid height
 grid_w = 11       # Grid width
 radius = 2        # Neighbour radius
-step = 0.5
-ep = 100          # No of epochs
+step = 0.5        # Learning step
+ep = 300          # No of epochs
 
 # Load data
 dataset = ld.load_german_data()

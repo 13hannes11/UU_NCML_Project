@@ -20,6 +20,8 @@ def load_german_data():
     party_column_g = 'Fraktion/Gruppe'
     name_column = 'Member'
     party_column = 'Party'
+    
+    parties_to_replace = {'BÜNDNIS`90/DIE GRÜNEN':'BÜ90/GR'}
 
     parties_to_remove = ['Fraktionslos']
 
@@ -48,6 +50,7 @@ def load_german_data():
                 
                 df=df.rename(columns={name_column_g:name_column,party_column_g:party_column})
                 df=df[~df.Party.isin(parties_to_remove)]
+                df[party_column].replace(parties_to_replace, inplace=True)
                 
                 period = df.iloc[0][period_column_g]
                                     
