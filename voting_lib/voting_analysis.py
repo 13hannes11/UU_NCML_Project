@@ -142,7 +142,7 @@ def plot_hoverscatter(x, y, categories, hover_labels, colors, cmap = plt.cm.RdYl
     print(labels[0])
     cat = list(map(lambda l: categories[int(re.sub(r'([^\d]+)', "", l))], labels))
     
-    legend = ax.legend(handles, cat, loc="upper right", title="Sizes")
+    legend = ax.legend(handles, cat, bbox_to_anchor=(1.3, 1), loc='upper left')
 
     annot = ax.annotate("", xy=(0,0), 
                         xytext=(ANNOTATION_DISTANCE, ANNOTATION_DISTANCE),
