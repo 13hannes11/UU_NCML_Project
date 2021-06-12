@@ -4,6 +4,7 @@
 import voting_lib.load_data as ld
 import voting_lib.voting_analysis as va
 import voting_lib.political_compass as pc
+from voting_lib.party_colors import de_name_color
 import numpy as np
 
 # Training Paramters
@@ -30,5 +31,5 @@ for period, df in dataset.items():
     model = va.train_model(X, grid_h, grid_w, radius, step, ep)
 
     # Predict and visualize output
-    va.predict(model, data, grid_h, grid_w, pc.get_compass_parties(year=period_to_compass_year[period], country='de'))
+    va.predict(model, data, grid_h, grid_w, de_name_color, pc.get_compass_parties(year=period_to_compass_year[period], country='de'))
 
