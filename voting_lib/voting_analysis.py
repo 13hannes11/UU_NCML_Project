@@ -40,7 +40,6 @@ def predict(model, data, grid_h, grid_w, party_colors, comparison_data=pd.DataFr
 
     # Plot hit map
     plot_hits(prediction, grid_w, grid_h)
-    plt.title("Hitmap")
     
     # converting to x and y coordinates
     ys, xs = np.unravel_index(np.argmax(prediction, axis=1), (grid_h, grid_w))
@@ -48,7 +47,6 @@ def predict(model, data, grid_h, grid_w, party_colors, comparison_data=pd.DataFr
     # plotting mps
     party_affiliation = data[:,1]
     plot_mps(data[:,0], xs, ys, party_affiliation, party_colors, randomize_positions=True)
-    plt.title("Members of Parliament")
     plt.show()    
 
     # calculating party positions based on mps
@@ -66,28 +64,23 @@ def predict(model, data, grid_h, grid_w, party_colors, comparison_data=pd.DataFr
     
     # plotting parties
     plot_parties(party_pos, party_colors, randomize_positions=False, new_plot=False)
-    plt.title('Node distance plot with parties')
 
     # plotting party distances in output space
     part_distance_out = calc_party_distances(party_pos) 
     plot_party_distances(part_distance_out)
-    plt.title('Party Distances')
     plt.show()
 
     if not comparison_data.empty:
        plot_parties(comparison_data, party_colors, randomize_positions=False, new_plot=True)
-       plt.title("Political Compass")
        plt.ylabel("libertarian - authoritarian")
        plt.xlabel("left < economic > right")
               
        comparison_data_dist = calc_party_distances(comparison_data)
        plot_party_distances(comparison_data_dist)
-       plt.title("Political Compass Party Distances")
 
        err = remove_NaN_rows_columns(normalize_df(part_distance_out) - normalize_df(comparison_data_dist))
        err = err * err
        plot_party_distances(err)
-       plt.title(f'Normalized Distance Squared Error, with MSE={np.nanmean(err.to_numpy()):.2f}')
        plt.show()
 
 def iter_neighbours(weights, hexagon=False):
