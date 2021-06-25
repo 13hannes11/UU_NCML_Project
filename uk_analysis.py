@@ -11,15 +11,12 @@ import numpy as np
 import pandas as pd
 import os
 
-
-
 # Train model
-grid_h = 30       # Grid height
-grid_w = 30       # Grid width
-radius = 3        # Neighbour radius
+grid_h = 13       # Grid height
+grid_w = 13       # Grid width
+radius = 2        # Neighbour radius
 step = 0.5
-ep = 1         # No of epochs
-
+ep = 300         # No of epochs
 
 period_to_compass_year = {'2015_uk':2015, '2017_uk':2017, '2019_uk':2019}
 main_directory = 'uk/csv'

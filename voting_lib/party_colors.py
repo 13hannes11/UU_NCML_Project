@@ -1,12 +1,12 @@
 de_name_color = {
     'AfD': 'blue', 
     'BÜ90/GR': 'green', 
-    'CDU/CSU': 'black', 
+    'CDU/CSU': 'orange', 
     'DIE LINKE.': 'purple', 
-    'FDP': 'yellow', 
+    'DIE LINKE': 'purple', 
+    'FDP': 'magenta', 
     'SPD': 'red',
 }
-
 
 uk_name_color = {
     'Conservative': 'blue', 
@@ -15,9 +15,11 @@ uk_name_color = {
     'Labour': 'red',
     'Liberal Democrat': 'darkorange', 
     'Plaid Cymru': 'darkgreen', 
-    'Scottish National Party': 'yellow', 
+    'Scottish National Party': 'magenta', 
     'Sinn Féin': 'yellowgreen', 
     'Social Democratic & Labour Party': 'cyan', 
     'UK Independence Party': 'purple',
     'Ulster Unionist Party': 'lightskyblue',
+    'Alba Party': 'black',
+    'Alliance': 'olive',
 }
